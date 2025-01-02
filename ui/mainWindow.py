@@ -74,3 +74,23 @@ class MainWindow(QMainWindow):
             cv2.imwrite(file_name, self.mask)
             self.statusBar.showMessage(f"Saved mask: {file_name}")
 
+    def display_image(self):
+        qformat = QImage.Format_RGB888
+        img = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        h, w, ch = img.shape
+        bytes_per_line = ch * w
+        qt_image = QImage(img.data, w, h, bytes_per_line, qformat)
+        pixmap = QPixmap.fromImage(qt_image)
+        self.image_label.setPixmap(pixmap)
+        self.image_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+        self.image_label.mousePressEvent = self.get_pos
+
+    def get_pos(self, event):
+        x = event.pos().x()
+        y = event.pos().y()
+        self.last_point = QPoint(x, y)
+        self.points.append([x, y])
+        self.draw_point(x, y)
+        self.statusBar.showMessage(f"Point added at: ({x}, {y})")
+        # You can trigger the segmentation here or with a separate button
+        self.run_segmentation()
