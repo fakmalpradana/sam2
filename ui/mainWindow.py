@@ -93,4 +93,14 @@ class MainWindow(QMainWindow):
         self.draw_point(x, y)
         self.statusBar.showMessage(f"Point added at: ({x}, {y})")
         # You can trigger the segmentation here or with a separate button
-        self.run_segmentation()
+        # self.run_segmentation()
+
+    def draw_point(self, x, y):
+        pixmap = self.image_label.pixmap()
+        painter = QPainter(pixmap)
+        pen = QPen(QColor('red'))
+        pen.setWidth(5)
+        painter.setPen(pen)
+        painter.drawPoint(x, y)
+        painter.end()
+        self.image_label.setPixmap(pixmap)
