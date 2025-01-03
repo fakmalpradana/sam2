@@ -1,2 +1,5 @@
 __pycache__
 img
+sam2
+*.DS_Store
+*.pt
